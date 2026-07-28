@@ -1,105 +1,61 @@
-# 🚀 Proyecto Semanal — Procesador de Datos con Node.js
+# 🚀 Bootcamp Node.js & Express.js — Soluciones
 
-## 🎯 Objetivo
-
-Construir una herramienta de línea de comandos (CLI) que lea datos desde un archivo JSON, los procese aplicando filtros y transformaciones, y genere un reporte con los resultados — todo usando **Node.js + TypeScript + async/await**.
+Este repositorio contiene las soluciones semanales a los ejercicios y proyectos del bootcamp.
 
 ---
 
-## 📋 Tu Dominio Asignado
+## 📂 Semana 01 — Fundamentos de Node.js, TypeScript y CLI
 
-**El instructor te asignará un dominio específico.** Mientras tanto, el código `starter/` trabaja con un recurso genérico llamado `Item`.
+En esta primera semana desarrollamos una **herramienta de línea de comandos (CLI)** en Node.js + TypeScript utilizando módulos ESM y la API de promesas de Node.js (`fs/promises`).
 
-Cuando recibas tu dominio, renombra:
-- `Item` → el recurso principal de tu dominio (ej. `Book`, `Medicine`, `Member`)
-- `items.json` → el archivo de datos de tu dominio (ej. `books.json`)
-- Los campos de `Item` → atributos propios de tu recurso
+### 🎯 Proyecto Adaptado: Procesador de Datos — Jardín Infantil Privado
+El sistema lee una base de datos local en JSON, procesa métricas estadísticas y genera reportes dinámicos.
 
-### 💡 Ejemplos de Adaptación por Dominio
-
-| Dominio | Recurso | Campos |
-|---------|---------|--------|
-| Biblioteca | `Book` | `title`, `author`, `genre`, `available` |
-| Farmacia | `Medicine` | `name`, `category`, `price`, `stock`, `requiresPrescription` |
-| Gimnasio | `Member` | `name`, `plan`, `active`, `monthlyFee` |
-| Restaurante | `Dish` | `name`, `category`, `price`, `available` |
-| Hotel | `Room` | `number`, `type`, `pricePerNight`, `available` |
+* **Dominio asignado:** Jardín Infantil Privado
+* **Categorías de datos:**
+  * `children`: Programas y servicios para niños/as.
+  * `parents`: Talleres y eventos para padres de familia.
+  * `staff`: Gestión y nómina/servicios del personal docente.
+  * `activities`: Actividades extracurriculares y talleres.
 
 ---
 
-## ✅ Requisitos Funcionales
+### 🛠️ Lo que se implementó:
 
-### 1. Leer datos desde un archivo JSON
+1. **Lectura Asíncrona de Archivos (`src/reader.ts`):** 
+   - Implementación de `fs/promises` para leer y parsear el catálogo `data/items.json`.
+   - Manejo de errores amigable si el archivo no existe o tiene errores de formato JSON.
 
-La herramienta debe leer el archivo `data/items.json` usando `fs/promises`.
+2. **Procesamiento de Métricas y Filtros (`src/processor.ts`):**
+   - Función `filterByCategory`: Filtra el catálogo según el argumento pasado por CLI.
+   - Función `calculateSummary`: Calcula métricas en tiempo real (total de elementos, activos vs inactivos, precio promedio, elemento más costoso y más económico, y categorías disponibles).
 
-### 2. Mostrar un resumen del catálogo
+3. **Generación de Reporte (`src/writer.ts`):**
+   - Creación automática del directorio y archivo de salida `output/report.json` con la fecha y métricas procesadas.
 
-- Total de ítems
-- Ítems activos vs inactivos
-- Precio promedio
-- Ítem más caro y más barato
+4. **Entrada de Comandos CLI (`src/index.ts`):**
+   - Manejo de argumentos con `process.argv` (soporte para `--category <nombre>`).
 
-### 3. Filtrar por categoría
-
-Aceptar un argumento de línea de comandos para filtrar por categoría:
-```bash
-pnpm start -- --category electronics
-```
-
-### 4. Generar reporte en un archivo de salida
-
-Guardar el reporte en `output/report.json` usando `fs/promises.writeFile`.
-
-### 5. Manejo de errores
-
-- Si el archivo `items.json` no existe → mostrar error descriptivo y terminar con `process.exit(1)`
-- Si la categoría no existe → mostrar aviso y listar las categorías disponibles
+5. **Escribir TypeScript Estricto:**
+   - Tipado fuerte en `src/types.ts` y compilación limpia pasando el comando `pnpm build` (`tsc --noEmit`).
 
 ---
 
-## 🛠️ Entregables
-
-1. **Código funcional** que pase `pnpm build` sin errores TypeScript
-2. **README.md actualizado** con tu dominio y descripción del recurso
-3. **Screenshots o logs** de la herramienta ejecutándose con distintos argumentos
-4. **`data/items.json`** adaptado a tu dominio (mínimo 10 registros)
-5. **Reporte generado** en `output/report.json`
-
----
-
-## ⏱️ Tiempo estimado: 2-3 horas
-
----
-
-## 🧪 Cómo correr el proyecto
+### 🧪 Cómo ejecutar el proyecto de la Semana 01
 
 ```bash
-cd 3-proyecto/starter
+# 1. Entrar a la carpeta del proyecto
+cd bootcamp/week-01-nodejs_fundamentals/3-proyecto/starter
+
+# 2. Instalar dependencias
 pnpm install
-pnpm dev              # sin filtro — muestra todos
-pnpm dev -- --category electronics   # con filtro
-```
 
----
+# 3. Ejecutar sin filtros (procesa todo el catálogo)
+pnpm dev
 
-## 📊 Criterios de Evaluación
+# 4. Ejecutar filtrando por categoría
+pnpm dev -- --category activities
+pnpm dev -- --category children
 
-| Criterio | Peso |
-|----------|------|
-| Lee y parsea `items.json` correctamente | 20% |
-| Calcula el resumen (total, promedio, extremos) | 20% |
-| Filtra por categoría con `--category` | 20% |
-| Escribe `output/report.json` correctamente | 20% |
-| Manejo de errores (archivo no encontrado, categoría inexistente) | 10% |
-| TypeScript estricto — `pnpm build` sin errores | 10% |
-
----
-
-## 🔗 Recursos de Apoyo
-
-- [Teoría: Módulos ESM](../../1-teoria/02-modulos-esm.md)
-- [Teoría: async/await](../../1-teoria/03-async-await.md)
-- [Ejercicio 01: Hello Node](../../2-practicas/ejercicio-01-hello-node/README.md)
-- [Node.js fs/promises API](https://nodejs.org/docs/latest/api/fs.html#promises-api)
-- [process.argv — Node.js docs](https://nodejs.org/docs/latest/api/process.html#processargv)
+# 5. Validar tipos con TypeScript
+pnpm build
