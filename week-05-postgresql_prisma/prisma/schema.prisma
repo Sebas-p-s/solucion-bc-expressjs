@@ -1,0 +1,51 @@
+// Prisma Schema — Proyecto Semana 05
+// Dominio: Jardín infantil privado
+// Entidades del dominio: children, parents, staff, activities
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================
+// Entidad secundaria — Staff (profesoras/coordinadoras)
+// Relación 1:N → un Staff puede tener muchos Children asignados
+// ============================================================
+model Staff {
+  id        Int      @id @default(autoincrement())
+  name      String
+  role      String // "profesora" | "auxiliar" | "coordinadora"
+  phone     String
+  email     String   @unique
+  children  Child[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("staff")
+}
+
+// ============================================================
+// Entidad principal — Child (niño matriculado)
+// parents y activities se modelan como campos propios de Child
+// ============================================================
+model Child {
+  id            Int      @id @default(autoincrement())
+  fullName      String
+  age           Int
+  group         String // "párvulos" | "pre-jardín" | "jardín" | "transición"
+  documentId    String   @unique // Registro civil / tarjeta de identidad del niño
+  parentName    String
+  parentPhone   String
+  activities    String[] // Actividades extracurriculares
+  active        Boolean  @default(true)
+  staff         Staff    @relation(fields: [staffId], references: [id])
+  staffId       Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("children")
+}
